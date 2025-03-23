@@ -11,7 +11,7 @@ COPY . .
 RUN npm run build
 
 # Production Stage
-FROM nginx:alpine
+FROM alpine:3.21.4
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Add custom NGINX configuration (optional)
