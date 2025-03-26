@@ -164,19 +164,23 @@ jobs:
           IMAGE_TAG: sha-${{ github.sha }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           REGISTRY: ghcr.io
+          DOMAIN_NAME: "devops.kwebmakerdigital.com"    # Added domain name
         run: |
           # Define the new image with tag
           NEW_IMAGE="${REGISTRY}/${GITHUB_REPOSITORY}:${IMAGE_TAG}"
           
-          # Update the deployment file directly
+          # Update the deployment file with the new image
           sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" kubernetes/deployment.yaml
           
-          # Verify the change
-          echo "Updated deployment to use image: ${NEW_IMAGE}"
-          grep -A 1 "image:" kubernetes/deployment.yaml
+          # Add domain name to Kubernetes deployment file
+          sed -i "s|host: .*|host: ${DOMAIN_NAME}|g" kubernetes/deployment.yaml
+          
+          # Verify the changes
+          echo "Updated deployment to use image: ${NEW_IMAGE} and domain: ${DOMAIN_NAME}"
+          cat kubernetes/deployment.yaml
       
       - name: Commit and push changes
         run: |
           git add kubernetes/deployment.yaml
-          git commit -m "Update Kubernetes deployment with new image tag: ${{ needs.docker.outputs.image_tag }} [skip ci]" || echo "No changes to commit"
+          git commit -m "Update Kubernetes deployment with new image and domain: ${{ env.DOMAIN_NAME }} [skip ci]" || echo "No changes to commit"
           git push
