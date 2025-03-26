@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: tic-tac-toe
-          image: ghcr.io/ashishworld/tic-tac-toe-game:sha-4d9ba950b7143ff4a7e2bedb58190520d5b5fb3b
+          image: ghcr.io/ashishworld/tic-tac-toe-game:sha-b8ee490e93919dff3dc5fb2ada492b4ed6f73b3e
           imagePullPolicy: Always
           ports:
             - containerPort: 80
