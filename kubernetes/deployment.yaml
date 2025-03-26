@@ -1,4 +1,4 @@
----                        # ✅ Add this at the beginning
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,49 +16,29 @@ spec:
         app: tic-tac-toe
     spec:
       containers:
-      - name: tic-tac-toe
-        image: ghcr.io/ashishworld/tic-tac-toe-game:sha-4d9ba950b7143ff4a7e2bedb58190520d5b5fb3b
-        # Image will be automatically updated by CI/CD pipeline
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 80
-        resources:
-          limits:
-            cpu: "0.5"
-            memory: "512Mi"
-          requests:
-            cpu: "0.2"
-            memory: "256Mi"
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: tic-tac-toe
+          image: ghcr.io/ashishworld/tic-tac-toe-game:sha-4d9ba950b7143ff4a7e2bedb58190520d5b5fb3b
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "512Mi"
+            requests:
+              cpu: "0.2"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
       imagePullSecrets:
-      - name: github-container-registry
-
----
-
-### ✅ **Service Resource**
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: tic-tac-toe-service
-  labels:
-    app: tic-tac-toe
-spec:
-  selector:
-    app: tic-tac-toe
-  ports:
-    - protocol: TCP
-      port: 80        # Service port
-      targetPort: 80   # Container port
-  type: ClusterIP
+        - name: github-container-registry
