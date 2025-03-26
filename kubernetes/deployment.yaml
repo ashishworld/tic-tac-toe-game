@@ -17,7 +17,6 @@ spec:
       containers:
       - name: tic-tac-toe
         image: ghcr.io/ashishworld/tic-tac-toe-game:sha-a1337ebd50c10b3b857551fa00c7ee7d5a8e90df
-        # Image will be automatically updated by CI/CD pipeline
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -42,3 +41,22 @@ spec:
           periodSeconds: 5
       imagePullSecrets:
       - name: github-container-registry
+
+---
+
+### ✅ **Service Resource**
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: tic-tac-toe-service
+  labels:
+    app: tic-tac-toe
+spec:
+  selector:
+    app: tic-tac-toe
+  ports:
+    - protocol: TCP
+      port: 80        # Service port
+      targetPort: 80   # Container port
+  type: ClusterIP
